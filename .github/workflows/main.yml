@@ -1,0 +1,44 @@
+name: Deploy to PROD
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ DEV ]
+
+# env:
+#   GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+#     - name: Set up Git credentials
+#       run: |
+#         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+#         git config --global user.name "github-actions[bot]"
+#         echo "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
+#         git config credential.helper store
+        
+    
+    - name: Merge DEV -> PROD
+      uses: devmasx/merge-branch@master
+      with:
+        type: now
+        from_branch: DEV
+        target_branch: PROD
+        github_token: ${{ secrets.GIT_TOKEN }}
+    
+
+#     - name: Merge DEV into PROD
+#       run: |
+#         git checkout PROD
+#         git merge DEV
+
+#     - name: Push changes to PROD
+#       run: |
+#         git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/HakeemYB/task.git HEAD:PROD
+# to teach azeem
